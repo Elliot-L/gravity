@@ -11,9 +11,14 @@ public abstract class AbstractPendulum {
      */
     private double stringLength, pointMass;
     protected double theta0; 
-    protected double g; 
-    public static final double GRAVITY = 9.80665;
-
+    //protected double g; 
+    //private double GRAVITY = 9.80665;
+    GravityConstant grav;
+    
+    //an additional method to modify the gravity constant
+    public void setGravityConstant(GravityConstant grav){
+    	this.grav = grav;
+    }
 
     /**
      * Creates a new Pendulum instance using
@@ -22,7 +27,7 @@ public abstract class AbstractPendulum {
      * inTheta0: angular displacement at t=0 (0<=theta0)
      * inG: gravitational field value to use
      */
-    public AbstractPendulum (double inLength, double inMass, double inTheta0) {
+    public AbstractPendulum (double inLength, double inMass, double inTheta0, GravityConstant grav) {
 	if (validStringLength (inLength)) stringLength = inLength;
 	else throw new IllegalArgumentException ("invalid string length: " + inLength);
 	if (validPointMass(inMass)) pointMass = inMass;
@@ -30,9 +35,10 @@ public abstract class AbstractPendulum {
 	if (validDisplacement (inTheta0)) theta0 = inTheta0;
 	else throw new IllegalArgumentException 
 		 ("invalid angular displacement: " + inTheta0);
+	this.grav = grav;
 	//if (validGC (inG)) g = inG;
 	//else throw new IllegalArgumentException ("invalid local gravitational field: " + inG);
-	g = GRAVITY;
+	//g = GRAVITY;
     }
 
     private boolean validDisplacement (double val) { return (val >= 0); }
@@ -46,6 +52,6 @@ public abstract class AbstractPendulum {
 
     public double getStringLength () { return stringLength; }
 
-    public double getGravitationalField () { return g; }
+    public double getGravitationalField () { return grav.getGravitationalField(); }
 
 }
